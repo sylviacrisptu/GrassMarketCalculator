@@ -192,3 +192,436 @@ label input {
     grid-template-columns: 1fr;
   }
 }
+
+.listing-entry {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(200px, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  margin-top: 24px;
+}
+
+.autocomplete-wrapper {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #b9c7c2;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgb(34 54 47 / 18%);
+}
+
+.suggestion {
+  display: block;
+  width: 100%;
+  padding: 9px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.suggestion:hover,
+.suggestion.selected {
+  background: #e2eee9;
+}
+
+.form-error {
+  color: #a53c3c;
+  font-weight: 700;
+}
+
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.table-toolbar > input {
+  flex: 1 1 260px;
+  padding: 10px 12px;
+  border: 1px solid #b9c7c2;
+  border-radius: 10px;
+}
+
+.table-toolbar select {
+  padding: 10px 34px 10px 12px;
+  border: 1px solid #b9c7c2;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.checkbox-label {
+  display: flex;
+  grid-template-columns: none;
+  flex-direction: row;
+  gap: 7px;
+  align-items: center;
+  font-weight: 400;
+}
+
+.listing-table-wrapper {
+  margin-top: 16px;
+  overflow-x: auto;
+  border: 1px solid #c5d1cd;
+  border-radius: 12px;
+}
+
+.listing-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.listing-table th,
+.listing-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid #dce4e1;
+  text-align: left;
+}
+
+.listing-table th {
+  background: #f2f6f4;
+}
+
+.listing-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.favorite-column,
+.actions-column {
+  width: 54px;
+  text-align: center !important;
+}
+
+.favorite-button,
+.delete-button {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.favorite-button:hover {
+  background: #fff2bd;
+}
+
+.delete-button {
+  font-size: 25px;
+}
+
+.delete-button:hover {
+  background: #f8dddd;
+  color: #9f2929;
+}
+
+@media (max-width: 760px) {
+  .listing-entry {
+    grid-template-columns: 1fr;
+  }
+}
+
+.brand,
+.topbar-actions,
+.page-header {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 12px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 14px;
+  background: #68ad93;
+  color: white;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.topbar-actions {
+  gap: 10px;
+}
+
+.github-link {
+  padding: 10px 14px;
+  border: 1px solid #b9c7c2;
+  border-radius: 11px;
+  color: inherit;
+  text-decoration: none;
+  background: white;
+}
+
+.page {
+  width: min(1500px, 100%);
+  margin-inline: auto;
+}
+
+.page-header {
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.page-header h2 {
+  margin: 3px 0 5px;
+  font-size: clamp(27px, 3vw, 38px);
+}
+
+.page-header p {
+  margin: 0;
+  color: #697873;
+}
+
+.page-eyebrow {
+  color: #4c9278;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page-stat {
+  min-width: 135px;
+  padding: 15px 18px;
+  border: 1px solid #c5d1cd;
+  border-radius: 15px;
+  background: #f8fbfa;
+  text-align: right;
+}
+
+.page-stat strong {
+  display: block;
+  font-size: 25px;
+}
+
+.page-stat span {
+  color: #697873;
+  font-size: 13px;
+}
+
+.entry-card,
+.results-card {
+  padding: 20px;
+  border: 1px solid #c5d1cd;
+  border-radius: 17px;
+  background: white;
+  box-shadow: 0 8px 30px rgb(37 62 53 / 6%);
+}
+
+.results-card {
+  margin-top: 18px;
+}
+
+.entry-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(200px, 1.1fr)
+    minmax(190px, 0.9fr)
+    minmax(150px, 0.7fr)
+    auto;
+  gap: 13px;
+  align-items: end;
+}
+
+.notes-field {
+  margin-top: 13px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  resize: vertical;
+  border: 1px solid #b9c7c2;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.cell-note {
+  display: block;
+  max-width: 340px;
+  margin-top: 4px;
+  overflow: hidden;
+  color: #71807b;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.listing-type,
+.price-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.listing-type {
+  padding: 5px 9px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.price-pill {
+  padding: 5px 10px;
+}
+
+.listing-type.buying,
+.price-pill.buying {
+  color: #27644d;
+  background: #dff2e9;
+}
+
+.listing-type.selling,
+.price-pill.selling {
+  color: #8b3d3d;
+  background: #f8e1e1;
+}
+
+@media (max-width: 950px) {
+  .entry-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar-actions {
+    width: 100%;
+  }
+
+  .global-search {
+    flex: 1;
+    width: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .entry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-stat {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+.global-search-container {
+  display: grid;
+  gap: 4px;
+  min-width: min(460px, 46vw);
+}
+
+.global-search-wrapper {
+  position: relative;
+}
+
+.global-search-wrapper .global-search {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  background: transparent;
+}
+
+.inline-completion {
+  position: absolute;
+  z-index: 3;
+  top: calc(50% - 1px);
+  overflow: hidden;
+  max-width: calc(100% - 44px);
+  color: #6f9fd1;
+  line-height: normal;
+  pointer-events: none;
+  transform: translateY(-50%);
+  white-space: pre;
+}
+
+/*
+  JavaScript adds only the untyped completion to this element.
+  Its left offset is updated below using a visual overlay approach.
+*/
+.global-search:focus + .inline-completion {
+  opacity: 1;
+}
+
+.autocomplete-help {
+  padding-left: 4px;
+  color: #71807b;
+  font-size: 12px;
+}
+
+.global-suggestions {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  max-height: 286px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid #b9c7c2;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgb(29 47 41 / 20%);
+}
+
+.global-suggestion {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 11px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.global-suggestion:hover,
+.global-suggestion.selected {
+  background: #e2eee9;
+}
+
+.global-suggestion small {
+  color: #71807b;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 950px) {
+  .global-search-container {
+    width: 100%;
+    min-width: 0;
+  }
+}
