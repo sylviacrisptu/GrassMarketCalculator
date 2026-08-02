@@ -7,83 +7,184 @@ import {
 } from "./data/itemCatalog.ts";
 import { renderListingPage } from "./ui/listingPage.ts";
 import { renderMarketPage } from "./ui/marketPage.ts";
+import { renderPlaceholderPage } from "./ui/placeholderPage.ts";
 
-type PageName = "buying" | "selling" | "market";
+type PageName =
+  | "buying"
+  | "selling"
+  | "market"
+  | "crafting"
+  | "storage"
+  | "history"
+  | "preferences";
+
+interface PageDefinition {
+  label: string;
+  icon: string;
+}
+
+const pageDefinitions: Record<PageName, PageDefinition> = {
+  buying: {
+    label: "Buying Items",
+    icon: "↓",
+  },
+  selling: {
+    label: "Selling Items",
+    icon: "↑",
+  },
+  market: {
+    label: "Market Prices",
+    icon: "≡",
+  },
+  crafting: {
+    label: "Crafting",
+    icon: "◆",
+  },
+  storage: {
+    label: "Storage",
+    icon: "□",
+  },
+  history: {
+    label: "History",
+    icon: "◷",
+  },
+  preferences: {
+    label: "Preferences",
+    icon: "⚙",
+  },
+};
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand">
         <div class="brand-mark">G</div>
 
-        <div>
-          <h1>Grass Market Calculator</h1>
-          <p>Minecraft Java Edition 1.19.2</p>
+        <div class="brand-copy">
+          <strong>Grass Market</strong>
+          <span>Calculator</span>
         </div>
+
+        <button
+          id="close-sidebar"
+          class="icon-button close-sidebar-button"
+          type="button"
+          aria-label="Close navigation"
+        >
+          ×
+        </button>
       </div>
 
-      <div class="topbar-actions">
-        <div class="global-search-container">
-          <div class="global-search-wrapper">
-            <input
-              id="global-search"
-              class="global-search"
-              type="search"
-              autocomplete="off"
-              placeholder="Search the market…"
-              aria-label="Search market listings"
-            />
+      <nav class="sidebar-navigation" aria-label="Main navigation">
+        ${Object.entries(pageDefinitions)
+          .map(
+            ([page, definition]) => `
+              <button
+                class="sidebar-link"
+                type="button"
+                data-page="${page}"
+              >
+                <span class="sidebar-link-icon">
+                  ${definition.icon}
+                </span>
 
-            <span id="global-inline-completion" class="inline-completion"></span>
+                <span>${definition.label}</span>
+              </button>
+            `,
+          )
+          .join("")}
+      </nav>
 
-            <div
-              id="global-suggestions"
-              class="global-suggestions"
-              hidden
-            ></div>
-          </div>
-
-          <span class="autocomplete-help">
-            Press Tab to autocomplete
-          </span>
-        </div>
+      <div class="sidebar-footer">
+        <button
+          id="theme-toggle"
+          class="sidebar-secondary-button"
+          type="button"
+        >
+          <span id="theme-toggle-icon">☾</span>
+          <span id="theme-toggle-label">Dark theme</span>
+        </button>
 
         <a
-          class="github-link"
+          class="sidebar-secondary-button"
           href="https://github.com/sylviacrisptu/GrassMarketCalculator/issues"
           target="_blank"
           rel="noreferrer"
         >
-          Support
+          <span>?</span>
+          <span>Support</span>
         </a>
+
+        <div class="version-label">
+          Web preview · Minecraft 1.19.2
+        </div>
       </div>
-    </header>
+    </aside>
 
-    <nav class="tabs">
-      <button class="tab active" data-page="buying">
-        Buying Items
-      </button>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-      <button class="tab" data-page="selling">
-        Selling Items
-      </button>
+    <div class="application-area">
+      <header class="application-header">
+        <button
+          id="open-sidebar"
+          class="icon-button mobile-menu-button"
+          type="button"
+          aria-label="Open navigation"
+        >
+          ☰
+        </button>
 
-      <button class="tab" data-page="market">
-        Market Prices
-      </button>
+        <div class="header-title">
+          <span id="header-eyebrow">Market workspace</span>
+          <strong id="header-page-title">Buying Items</strong>
+        </div>
 
-      <button class="tab" disabled>Crafting</button>
-      <button class="tab" disabled>Storage</button>
-      <button class="tab" disabled>History</button>
-    </nav>
+        <div class="header-search-area">
+          <div class="global-search-container">
+            <div class="global-search-wrapper">
+              <input
+                id="global-search"
+                class="global-search"
+                type="search"
+                autocomplete="off"
+                placeholder="Search the market…"
+                aria-label="Search market listings"
+              />
 
-    <main id="page-content" class="page">
-      <section class="panel">Loading item catalog…</section>
-    </main>
+              <span
+                id="global-inline-completion"
+                class="inline-completion"
+              ></span>
 
-    <footer id="statusbar" class="statusbar">
-      Starting…
-    </footer>
+              <div
+                id="global-suggestions"
+                class="global-suggestions"
+                hidden
+              ></div>
+            </div>
+
+            <span class="autocomplete-help">
+              Press Tab to autocomplete
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main id="page-content" class="page-content">
+        <section class="content-card">
+          Loading Minecraft item catalog…
+        </section>
+      </main>
+
+      <footer class="application-statusbar">
+        <span id="statusbar">Starting…</span>
+
+        <span class="status-indicator">
+          <span class="status-dot"></span>
+          Saved locally
+        </span>
+      </footer>
+    </div>
   </div>
 `;
 
@@ -93,8 +194,23 @@ const pageContent =
 const statusbar =
   document.querySelector<HTMLElement>("#statusbar")!;
 
-const tabs =
-  document.querySelectorAll<HTMLButtonElement>(".tab[data-page]");
+const sidebar =
+  document.querySelector<HTMLElement>("#sidebar")!;
+
+const sidebarOverlay =
+  document.querySelector<HTMLElement>("#sidebar-overlay")!;
+
+const openSidebarButton =
+  document.querySelector<HTMLButtonElement>("#open-sidebar")!;
+
+const closeSidebarButton =
+  document.querySelector<HTMLButtonElement>("#close-sidebar")!;
+
+const sidebarLinks =
+  document.querySelectorAll<HTMLButtonElement>(".sidebar-link");
+
+const headerPageTitle =
+  document.querySelector<HTMLElement>("#header-page-title")!;
 
 const globalSearch =
   document.querySelector<HTMLInputElement>("#global-search")!;
@@ -103,11 +219,23 @@ const globalSuggestions =
   document.querySelector<HTMLDivElement>("#global-suggestions")!;
 
 const inlineCompletion =
-  document.querySelector<HTMLSpanElement>("#global-inline-completion")!;
+  document.querySelector<HTMLSpanElement>(
+    "#global-inline-completion",
+  )!;
+
+const themeToggle =
+  document.querySelector<HTMLButtonElement>("#theme-toggle")!;
+
+const themeToggleIcon =
+  document.querySelector<HTMLElement>("#theme-toggle-icon")!;
+
+const themeToggleLabel =
+  document.querySelector<HTMLElement>("#theme-toggle-label")!;
 
 let cleanupCurrentPage: (() => void) | null = null;
 let catalog: ItemCatalog;
 let selectedGlobalSuggestion = -1;
+let currentPage: PageName = "buying";
 
 function setStatus(message: string): void {
   statusbar.textContent = message;
@@ -120,6 +248,16 @@ function escapeHtml(value: string): string {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function closeMobileSidebar(): void {
+  sidebar.classList.remove("open");
+  sidebarOverlay.classList.remove("visible");
+}
+
+function openMobileSidebar(): void {
+  sidebar.classList.add("open");
+  sidebarOverlay.classList.add("visible");
 }
 
 function getGlobalSuggestions(): string[] {
@@ -148,8 +286,7 @@ function updateInlineCompletion(): void {
     return;
   }
 
-  const remainder = first.slice(typed.length);
-  inlineCompletion.textContent = remainder;
+  inlineCompletion.textContent = first.slice(typed.length);
 
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
@@ -168,9 +305,11 @@ function updateInlineCompletion(): void {
   ].join(" ");
 
   const typedWidth = context.measureText(typed).width;
-  const leftPadding = Number.parseFloat(computedStyle.paddingLeft) || 14;
+  const leftPadding =
+    Number.parseFloat(computedStyle.paddingLeft) || 14;
 
-  inlineCompletion.style.left = `${leftPadding + typedWidth + 2}px`;
+  inlineCompletion.style.left =
+    `${leftPadding + typedWidth + 2}px`;
 }
 
 function renderGlobalSuggestions(): void {
@@ -257,16 +396,72 @@ function acceptGlobalSuggestion(): boolean {
   return true;
 }
 
-function openPage(page: PageName, marketQuery = ""): void {
+function renderPlaceholder(page: PageName): void {
+  if (page === "crafting") {
+    renderPlaceholderPage(pageContent, {
+      eyebrow: "Recipe planning",
+      title: "Crafting",
+      description:
+        "Compare market prices with complete crafting paths.",
+      message:
+        "The interactive crafting tree and recipe estimator will be added here.",
+    });
+
+    return;
+  }
+
+  if (page === "storage") {
+    renderPlaceholderPage(pageContent, {
+      eyebrow: "Owned inventory",
+      title: "Storage",
+      description:
+        "Track items you already own and use them in calculations.",
+      message:
+        "Storage quantities, icons, favorites, and stack conversions will be added here.",
+    });
+
+    return;
+  }
+
+  if (page === "history") {
+    renderPlaceholderPage(pageContent, {
+      eyebrow: "Market records",
+      title: "History",
+      description:
+        "Review previous prices and changes to saved listings.",
+      message:
+        "Price history, charts, filters, and restoration tools will be added here.",
+    });
+
+    return;
+  }
+
+  renderPlaceholderPage(pageContent, {
+    eyebrow: "Application customization",
+    title: "Preferences",
+    description:
+      "Manage themes, icons, backups, data, and accessibility.",
+    message:
+      "Theme editing and application preferences will be added here.",
+  });
+}
+
+function openPage(
+  page: PageName,
+  marketQuery = "",
+): void {
   cleanupCurrentPage?.();
   cleanupCurrentPage = null;
+  currentPage = page;
 
-  tabs.forEach((tab) => {
-    tab.classList.toggle(
+  sidebarLinks.forEach((link) => {
+    link.classList.toggle(
       "active",
-      tab.dataset.page === page,
+      link.dataset.page === page,
     );
   });
+
+  headerPageTitle.textContent = pageDefinitions[page].label;
 
   if (page === "market") {
     cleanupCurrentPage = renderMarketPage(
@@ -274,18 +469,22 @@ function openPage(page: PageName, marketQuery = ""): void {
       setStatus,
       marketQuery,
     );
-  } else {
+  } else if (page === "buying" || page === "selling") {
     cleanupCurrentPage = renderListingPage(pageContent, {
       type: page,
       catalog,
       setStatus,
     });
+  } else {
+    renderPlaceholder(page);
   }
+
+  closeMobileSidebar();
 
   setStatus(
     page === "market" && marketQuery
       ? `Searching market for “${marketQuery}”`
-      : `Opened ${page} page`,
+      : `Opened ${pageDefinitions[page].label}`,
   );
 }
 
@@ -297,23 +496,72 @@ function performGlobalSearch(): void {
 
   openPage("market", query);
 
-  if (query) {
-    setStatus(`Showing market results for “${query}”`);
-  } else {
-    setStatus("Showing all market listings");
-  }
+  setStatus(
+    query
+      ? `Showing market results for “${query}”`
+      : "Showing all market listings",
+  );
+}
+
+type ThemeName = "light" | "dark";
+
+function getSavedTheme(): ThemeName {
+  return localStorage.getItem("gmc.theme") === "dark"
+    ? "dark"
+    : "light";
+}
+
+function applyTheme(theme: ThemeName): void {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("gmc.theme", theme);
+
+  const isDark = theme === "dark";
+
+  themeToggleIcon.textContent = isDark ? "☀" : "☾";
+  themeToggleLabel.textContent =
+    isDark ? "Light theme" : "Dark theme";
 }
 
 async function start(): Promise<void> {
+  applyTheme(getSavedTheme());
+
   try {
     catalog = await loadItemCatalog();
 
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        openPage(
-          (tab.dataset.page ?? "buying") as PageName,
-        );
+    sidebarLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        const page = link.dataset.page as PageName | undefined;
+
+        if (page) {
+          openPage(page);
+        }
       });
+    });
+
+    openSidebarButton.addEventListener(
+      "click",
+      openMobileSidebar,
+    );
+
+    closeSidebarButton.addEventListener(
+      "click",
+      closeMobileSidebar,
+    );
+
+    sidebarOverlay.addEventListener(
+      "click",
+      closeMobileSidebar,
+    );
+
+    themeToggle.addEventListener("click", () => {
+      const currentTheme =
+        document.documentElement.dataset.theme;
+
+      applyTheme(
+        currentTheme === "dark" ? "light" : "dark",
+      );
+
+      setStatus("Theme changed");
     });
 
     globalSearch.addEventListener(
@@ -386,14 +634,14 @@ async function start(): Promise<void> {
       }, 120);
     });
 
-    openPage("buying");
+    openPage(currentPage);
 
     setStatus(
       `Loaded ${catalog.items.length} Minecraft items`,
     );
   } catch (error) {
     pageContent.innerHTML = `
-      <section class="panel">
+      <section class="content-card">
         <h2>Could not start the calculator</h2>
 
         <p class="form-error">
