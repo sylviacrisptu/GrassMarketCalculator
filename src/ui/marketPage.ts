@@ -13,6 +13,10 @@ import {
     renderItemIdentity,
   } from "../components/itemIdentity.ts";
 
+import {
+    hydrateItemIcons,
+  } from "../services/itemIconService.ts";
+
 function escapeHtml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
@@ -398,6 +402,8 @@ export function renderMarketPage(
         `,
       )
       .join("");
+
+    hydrateItemIcons(tableBody);
 
     const table =
       tableBody.closest<HTMLTableElement>(

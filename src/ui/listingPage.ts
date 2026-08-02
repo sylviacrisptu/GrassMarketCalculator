@@ -18,6 +18,10 @@ import type {
 import { openListingActions } from "./listingActions.ts";
 import { openListingEditor } from "./listingEditor.ts";
 
+import {
+    hydrateItemIcons,
+  } from "../services/itemIconService.ts";
+
 
 interface ListingPageOptions {
   type: ListingType;
@@ -434,6 +438,8 @@ export function renderListingPage(
         `,
       )
       .join("");
+      
+    hydrateItemIcons(tableBody);
 
     const table =
       tableBody.closest<HTMLTableElement>("table")!;

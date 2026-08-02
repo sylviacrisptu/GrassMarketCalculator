@@ -1120,16 +1120,15 @@ textarea {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 11px;
-  color: var(--accent);
+  color: var(--muted);
   background:
     linear-gradient(
       145deg,
       var(--accent-soft),
       var(--surface-soft)
     );
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.02em;
   user-select: none;
 }
 
@@ -1139,6 +1138,14 @@ textarea {
   height: 28px;
   object-fit: contain;
   image-rendering: pixelated;
+}
+
+.item-icon.has-image {
+  color: transparent;
+}
+
+.item-icon.missing-icon {
+  color: var(--muted);
 }
 
 .item-identity-copy {
