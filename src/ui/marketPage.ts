@@ -9,6 +9,9 @@ import type { MarketListing } from "../types/listing.ts";
 
 import { openListingActions } from "./listingActions.ts";
 
+import {
+    renderItemIdentity,
+  } from "../components/itemIdentity.ts";
 
 function escapeHtml(value: string): string {
   return value
@@ -351,25 +354,7 @@ export function renderMarketPage(
             </td>
 
             <td>
-              <strong>
-                ${escapeHtml(listing.item)}
-              </strong>
-
-              ${
-                listing.universalPrice
-                  ? `
-                    <small class="cell-note">
-                      Universal price
-                    </small>
-                  `
-                  : listing.shopCoordinates
-                    ? `
-                      <small class="cell-note">
-                        ${escapeHtml(listing.shopCoordinates)}
-                      </small>
-                    `
-                    : ""
-              }
+                ${renderItemIdentity(listing)}
             </td>
 
             <td>

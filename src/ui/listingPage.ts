@@ -1,6 +1,10 @@
 import type { ItemCatalog } from "../data/itemCatalog.ts";
 
 import {
+    renderItemIdentity,
+  } from "../components/itemIdentity.ts";
+
+import {
   addListing,
   subscribeToListings,
   toggleListingFavorite,
@@ -386,25 +390,7 @@ export function renderListingPage(
             </td>
 
             <td>
-              <strong>
-                ${escapeHtml(listing.item)}
-              </strong>
-
-              ${
-                listing.universalPrice
-                  ? `
-                    <small class="cell-note">
-                      Universal price
-                    </small>
-                  `
-                  : listing.shopCoordinates
-                    ? `
-                      <small class="cell-note">
-                        ${escapeHtml(listing.shopCoordinates)}
-                      </small>
-                    `
-                    : ""
-              }
+                ${renderItemIdentity(listing)}
             </td>
 
             <td>
