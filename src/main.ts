@@ -9,6 +9,10 @@ import { renderListingPage } from "./ui/listingPage.ts";
 import { renderMarketPage } from "./ui/marketPage.ts";
 import { renderPlaceholderPage } from "./ui/placeholderPage.ts";
 
+import {
+  renderPreferencesPage,
+} from "./ui/preferencesPage.ts";
+
 type PageName =
   | "buying"
   | "selling"
@@ -476,6 +480,13 @@ function openPage(
       catalog,
       setStatus,
     });
+  } else if (page === "preferences") {
+    cleanupCurrentPage = renderPreferencesPage(
+      pageContent,
+      {
+        setStatus,
+      },
+    );
   } else {
     renderPlaceholder(page);
   }

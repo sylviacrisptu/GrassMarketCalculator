@@ -1,0 +1,30 @@
+{
+    "icons": [
+      {
+        "id": "shulker_box",
+        "name": "Shulker Box",
+        "filename": "shulker_box.png",
+        "aliases": [
+          "shulker box"
+        ]
+      },
+      {
+        "id": "empty_map",
+        "name": "Empty Map",
+        "filename": "empty_map.png",
+        "aliases": [
+          "empty map",
+          "map"
+        ]
+      },
+      {
+        "id": "block_of_redstone",
+        "name": "Block of Redstone",
+        "filename": "block_of_redstone.png",
+        "aliases": [
+          "block of redstone",
+          "redstone block"
+        ]
+      }
+    ]
+  }
