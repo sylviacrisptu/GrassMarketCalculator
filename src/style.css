@@ -846,3 +846,260 @@ textarea {
     gap: 4px;
   }
 }
+
+.compact-entry-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.compact-entry-card h3 {
+  margin: 4px 0;
+  font-size: 21px;
+}
+
+.compact-entry-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.row-menu-button {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 9px;
+  color: var(--text);
+  background: transparent;
+  font-size: 22px;
+}
+
+.row-menu-button:hover {
+  background: var(--accent-soft);
+}
+
+.context-menu {
+  position: fixed;
+  z-index: 1000;
+  min-width: 220px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  color: var(--text);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow);
+}
+
+.context-menu-item {
+  display: grid;
+  width: 100%;
+  min-height: 39px;
+  align-items: center;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 9px;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+  grid-template-columns: 25px minmax(0, 1fr);
+}
+
+.context-menu-item:hover {
+  background: var(--accent-soft);
+}
+
+.context-menu-item.danger {
+  color: var(--danger);
+}
+
+.context-menu-item.danger:hover {
+  background: var(--danger-soft);
+}
+
+.context-menu-icon {
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+.context-menu-separator {
+  height: 1px;
+  margin: 5px 6px;
+  background: var(--border);
+}
+
+.dialog-backdrop {
+  position: fixed;
+  z-index: 1500;
+  inset: 0;
+  display: grid;
+  overflow: auto;
+  padding: 24px;
+  place-items: center;
+  background: rgb(0 0 0 / 54%);
+  backdrop-filter: blur(4px);
+}
+
+.dialog {
+  width: min(760px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  color: var(--text);
+  background: var(--surface-raised);
+  box-shadow: 0 22px 70px rgb(0 0 0 / 32%);
+}
+
+.dialog-header,
+.dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+}
+
+.dialog-header {
+  border-bottom: 1px solid var(--border);
+}
+
+.dialog-header h2 {
+  margin: 3px 0 0;
+}
+
+.dialog-body {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+.dialog-footer {
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+}
+
+.dialog-close-button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  color: var(--text);
+  background: transparent;
+  font-size: 25px;
+}
+
+.dialog-close-button:hover {
+  background: var(--surface-soft);
+}
+
+.editor-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.editor-grid label {
+  position: relative;
+}
+
+.editor-suggestions {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 5px);
+  right: 0;
+  left: 0;
+  max-height: 230px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow);
+}
+
+.editor-suggestions button {
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--text);
+  background: transparent;
+  text-align: left;
+}
+
+.editor-suggestions button:hover {
+  background: var(--accent-soft);
+}
+
+.universal-price-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.universal-price-option input {
+  width: auto;
+  margin-top: 3px;
+}
+
+.universal-price-option span {
+  display: grid;
+  gap: 3px;
+}
+
+.universal-price-option small {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.secondary-button {
+  min-height: 42px;
+  padding: 10px 17px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  color: var(--text);
+  background: var(--surface-soft);
+  font-weight: 700;
+}
+
+.secondary-button:hover {
+  background: var(--accent-soft);
+}
+
+.notes-dialog {
+  width: min(560px, 100%);
+}
+
+.notes-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 650px) {
+  .compact-entry-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog-backdrop {
+    align-items: start;
+    padding: 10px;
+  }
+
+  .dialog {
+    max-height: calc(100vh - 20px);
+  }
+}

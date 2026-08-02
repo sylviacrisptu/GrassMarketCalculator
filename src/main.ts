@@ -467,6 +467,7 @@ function openPage(
     cleanupCurrentPage = renderMarketPage(
       pageContent,
       setStatus,
+      catalog,
       marketQuery,
     );
   } else if (page === "buying" || page === "selling") {
