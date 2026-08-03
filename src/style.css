@@ -2023,3 +2023,84 @@ textarea {
     display: grid;
   }
 }
+
+.storage-table {
+  min-width: 780px;
+}
+
+.storage-quantity-input {
+  min-width: 210px;
+}
+
+.storage-adjust-column {
+  width: 105px;
+  text-align: center !important;
+}
+
+.storage-adjust-buttons {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.storage-adjust-buttons button {
+  display: grid;
+  width: 40px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  color: var(--text);
+  background: var(--surface-soft);
+  font-size: 20px;
+}
+
+.storage-adjust-buttons button + button {
+  border-left: 1px solid var(--border);
+}
+
+.storage-adjust-buttons button:hover {
+  background: var(--accent-soft);
+}
+
+.storage-remove-button {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  margin-inline: auto;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  color: var(--danger);
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.storage-remove-button:hover {
+  background: var(--danger-soft);
+}
+
+.storage-help {
+  margin: 13px 2px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.storage-editor-item-label {
+  position: relative;
+}
+
+.storage-editor-dialog {
+  width: min(650px, 100%);
+}
+
+.storage-adjust-column {
+  width: 160px;
+}
+
+.storage-adjust-buttons button {
+  width: 68px;
+  font-size: 14px;
+  font-weight: 700;
+}

@@ -21,6 +21,10 @@ import {
   renderProfitCalculatorPage,
 } from "./ui/profitCalculatorPage.ts";
 
+import {
+  renderStoragePage,
+} from "./ui/storagePage.ts";
+
 type PageName =
   | "buying"
   | "selling"
@@ -508,14 +512,24 @@ function openPage(
     );
   } else if (page === "profit") {
     cleanupCurrentPage =
-      renderProfitCalculatorPage(
+    renderProfitCalculatorPage(
+      pageContent,
+      {
+        catalog,
+        setStatus,
+        initialItem: profitItem,
+      },
+    );
+  } else if (page === "storage") {
+    cleanupCurrentPage =
+      renderStoragePage(
         pageContent,
         {
           catalog,
           setStatus,
-          initialItem: profitItem,
         },
       );
+
   } else if (page === "preferences") {
     cleanupCurrentPage = renderPreferencesPage(
       pageContent,
