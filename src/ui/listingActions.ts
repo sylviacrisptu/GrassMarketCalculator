@@ -131,6 +131,26 @@ import type {
         },
       },
       {
+        icon: "$",
+        label: "Send to Profit Calculator",
+        action: () => {
+          window.dispatchEvent(
+            new CustomEvent(
+              "gmc:navigate-profit",
+              {
+                detail: {
+                  item: listing.item,
+                },
+              },
+            ),
+          );
+      
+          options.setStatus(
+            `Sent ${listing.item} to Profit Calculator`,
+          );
+        },
+      },
+      {
         icon: "⧉",
         label: "Duplicate listing",
         action: () => {

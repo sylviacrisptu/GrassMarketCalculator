@@ -26,6 +26,7 @@ import {
     catalog: ItemCatalog;
     type: ListingType;
     existing?: MarketListing;
+    initialItem?: string;
     onSave: (listing: MarketListing) => void;
   }
   
@@ -157,7 +158,7 @@ import {
               id="editor-item"
               type="text"
               autocomplete="off"
-              value="${existing?.item ?? ""}"
+              value="${existing?.item ?? options.initialItem ?? ""}"
             />
   
             <div

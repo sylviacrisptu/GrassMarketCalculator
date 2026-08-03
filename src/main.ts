@@ -13,11 +13,21 @@ import {
   renderPreferencesPage,
 } from "./ui/preferencesPage.ts";
 
+import {
+  renderQuantityCalculatorPage,
+} from "./ui/quantityCalculatorPage.ts";
+
+import {
+  renderProfitCalculatorPage,
+} from "./ui/profitCalculatorPage.ts";
+
 type PageName =
   | "buying"
   | "selling"
   | "market"
   | "crafting"
+  | "quantity"
+  | "profit"
   | "storage"
   | "history"
   | "preferences";
@@ -43,6 +53,14 @@ const pageDefinitions: Record<PageName, PageDefinition> = {
   crafting: {
     label: "Crafting",
     icon: "◆",
+  },
+  quantity: {
+    label: "Quantity Calculator",
+    icon: "∑",
+  },
+  profit: {
+    label: "Profit Calculator",
+    icon: "$",
   },
   storage: {
     label: "Storage",
@@ -453,6 +471,7 @@ function renderPlaceholder(page: PageName): void {
 function openPage(
   page: PageName,
   marketQuery = "",
+  profitItem = "",
 ): void {
   cleanupCurrentPage?.();
   cleanupCurrentPage = null;
@@ -480,6 +499,23 @@ function openPage(
       catalog,
       setStatus,
     });
+  } else if (page === "quantity") {
+    renderQuantityCalculatorPage(
+      pageContent,
+      {
+        setStatus,
+      },
+    );
+  } else if (page === "profit") {
+    cleanupCurrentPage =
+      renderProfitCalculatorPage(
+        pageContent,
+        {
+          catalog,
+          setStatus,
+          initialItem: profitItem,
+        },
+      );
   } else if (page === "preferences") {
     cleanupCurrentPage = renderPreferencesPage(
       pageContent,
@@ -645,6 +681,22 @@ async function start(): Promise<void> {
         globalSuggestions.hidden = true;
       }, 120);
     });
+
+    window.addEventListener(
+      "gmc:navigate-profit",
+      (event) => {
+        const customEvent =
+          event as CustomEvent<{
+            item?: string;
+          }>;
+    
+        openPage(
+          "profit",
+          "",
+          customEvent.detail.item ?? "",
+        );
+      },
+    );
 
     openPage(currentPage);
 

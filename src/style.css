@@ -1648,3 +1648,378 @@ textarea {
     grid-column: 1 / -1;
   }
 }
+
+.quantity-calculator-card {
+  display: grid;
+  gap: 16px;
+}
+
+.quantity-examples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity-examples > span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.quantity-examples button {
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text);
+  background: var(--surface-soft);
+  font-size: 12px;
+}
+
+.quantity-examples button:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.quantity-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.quantity-results-card {
+  margin-top: 18px;
+}
+
+.quantity-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.quantity-results-header h3 {
+  margin: 4px 0 0;
+  font-size: 23px;
+}
+
+.quantity-result-row {
+  display: grid;
+  grid-template-columns: 210px max-content;
+  align-items: center;
+
+  gap: 20px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.quantity-result-row:last-child {
+  border-bottom: 0;
+}
+
+.quantity-result-row:nth-child(odd) {
+  background: var(--surface-soft);
+}
+
+.quantity-result-row > span {
+  color: var(--muted);
+}
+
+.quantity-result-row strong {
+  text-align: right;
+}
+
+@media (max-width: 560px) {
+  .quantity-results-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .quantity-result-row {
+    display: grid;
+    align-items: center;
+    gap: 18px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+
+    grid-template-columns: max-content auto;
+}
+
+.quantity-result-row strong {
+  text-align: left;
+}
+}
+
+.quantity-calculator-card,
+.quantity-results-card {
+  width: min(560px, 100%);
+}
+
+.quantity-calculator-card {
+  margin-right: auto;
+}
+
+.quantity-results-card {
+  margin-right: auto;
+}
+
+.quantity-results-header {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.quantity-results {
+  display: grid;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
+
+.quantity-result-row {
+  display: grid;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  grid-template-columns: 210px minmax(0, 1fr);
+}
+
+.quantity-result-row strong {
+  text-align: left;
+}
+
+.profit-calculator-card {
+  display: grid;
+  width: min(720px, 100%);
+  gap: 16px;
+}
+
+.profit-input-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(190px, 0.55fr);
+}
+
+.profit-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.profit-results-card {
+  margin-top: 18px;
+}
+
+.profit-results-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 15px;
+}
+
+.profit-results-header h3 {
+  margin: 4px 0 0;
+  font-size: 23px;
+}
+
+.profit-warning {
+  margin-bottom: 15px;
+  padding: 12px 14px;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--danger) 45%,
+      var(--border)
+    );
+  border-radius: 12px;
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.profit-warning p {
+  margin: 0;
+}
+
+.profit-warning p + p {
+  margin-top: 6px;
+}
+
+.profit-summary {
+  display: grid;
+  gap: 10px;
+  grid-template-columns:
+    repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.profit-summary-card {
+  display: grid;
+  gap: 5px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.profit-summary-card span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.profit-summary-card strong {
+  font-size: 20px;
+}
+
+.profit-summary-card strong.cost,
+.profit-total.cost,
+.profit-source-details strong.cost,
+.profit-summary-card strong.negative {
+  color: var(--selling-text);
+}
+
+.profit-summary-card strong.revenue,
+.profit-total.revenue,
+.profit-source-details strong.revenue,
+.profit-summary-card strong.positive {
+  color: var(--buying-text);
+}
+
+.profit-plan-grid {
+  display: grid;
+  align-items: start;
+  gap: 15px;
+  margin-top: 16px;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+}
+
+.profit-plan {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.profit-plan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+
+.profit-plan-header h4 {
+  margin: 3px 0 0;
+  font-size: 17px;
+}
+
+.profit-total {
+  font-size: 19px;
+}
+
+.profit-source-list {
+  display: grid;
+}
+
+.profit-source-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profit-source-row:last-child {
+  border-bottom: 0;
+}
+
+.profit-source-main,
+.profit-source-details {
+  display: grid;
+  gap: 3px;
+}
+
+.profit-source-main span,
+.profit-source-details span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.profit-source-details {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+@media (max-width: 850px) {
+  .profit-plan-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .profit-input-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profit-results-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .profit-source-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profit-source-details {
+    text-align: left;
+  }
+}
+
+.profit-listing-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.profit-listing-actions > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.profit-listing-actions span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.profit-listing-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 620px) {
+  .profit-listing-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .profit-listing-action-buttons {
+    display: grid;
+  }
+}
