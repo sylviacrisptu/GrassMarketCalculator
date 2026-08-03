@@ -5,6 +5,12 @@ export interface MarketListing {
   type: ListingType;
   item: string;
 
+  /**
+   * null means automatically choose an icon from the item name.
+   * A string means use that exact built-in or custom icon.
+   */
+  iconId: string | null;
+
   quantity: number;
   grassPrice: number;
   pricePerItem: number;

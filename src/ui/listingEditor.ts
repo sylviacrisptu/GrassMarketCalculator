@@ -12,6 +12,15 @@ import {
     ListingType,
     MarketListing,
   } from "../types/listing.ts";
+
+  import {
+    openIconPickerDialog,
+  } from "../components/IconPickerDialog.ts";
+  
+  import {
+    getIconById,
+    resolveItemIcon,
+  } from "../services/itemIconService.ts";
   
   interface ListingEditorOptions {
     catalog: ItemCatalog;
@@ -47,12 +56,52 @@ import {
     options: ListingEditorOptions,
   ): void {
     const existing = options.existing;
+    let selectedIconId =
+      existing?.iconId ?? null;
   
     const backdrop = document.createElement("div");
     backdrop.className = "dialog-backdrop";
   
     const dialog = document.createElement("section");
     dialog.className = "dialog listing-editor-dialog";
+
+    async function updateIconPreview():
+  Promise<void> {
+  iconPreview.replaceChildren("?");
+
+  const itemName =
+    itemInput.value.trim();
+
+  const resolved =
+    selectedIconId
+      ? await getIconById(selectedIconId)
+      : itemName
+        ? await resolveItemIcon(itemName)
+        : null;
+
+  iconDescription.textContent =
+    selectedIconId
+      ? "A specific icon is selected for this listing."
+      : "Automatically matched from the item name.";
+
+  if (!resolved) {
+    return;
+  }
+
+  const image = new Image();
+
+  image.alt = "";
+  image.draggable = false;
+  image.src = resolved.url;
+
+  image.addEventListener(
+    "load",
+    () => {
+      iconPreview.replaceChildren(image);
+    },
+    { once: true },
+  );
+}
   
     dialog.innerHTML = `
       <header class="dialog-header">
@@ -76,6 +125,30 @@ import {
       </header>
   
       <div class="dialog-body">
+        <div class="listing-editor-icon-row">
+          <div
+            id="listing-editor-icon-preview"
+            class="icon-picker-image"
+          >
+            ?
+          </div>
+
+          <div>
+            <strong>Listing icon</strong>
+
+            <p id="listing-editor-icon-description">
+              Automatically matched from the item name.
+            </p>
+          </div>
+
+          <button
+            id="change-listing-icon"
+            class="secondary-button"
+            type="button"
+          >
+            Change icon
+          </button>
+        </div>
         <div class="editor-grid">
           <label>
             Item
@@ -261,6 +334,21 @@ import {
       dialog.querySelector<HTMLDivElement>(
         "#editor-item-suggestions",
       )!;
+
+    const iconPreview =
+      dialog.querySelector<HTMLDivElement>(
+        "#listing-editor-icon-preview",
+      )!;
+    
+    const iconDescription =
+      dialog.querySelector<HTMLElement>(
+        "#listing-editor-icon-description",
+      )!;
+    
+    const changeIconButton =
+      dialog.querySelector<HTMLButtonElement>(
+        "#change-listing-icon",
+      )!;
   
     function close(): void {
       backdrop.remove();
@@ -367,6 +455,7 @@ import {
           id: existing?.id ?? createId(),
           type: existing?.type ?? options.type,
           item: canonicalItem,
+          iconId: selectedIconId,
   
           quantity: parsed.quantity,
           grassPrice: parsed.grassPrice,
@@ -461,8 +550,39 @@ import {
         save();
       }
     });
+
+    changeIconButton.addEventListener(
+      "click",
+      () => {
+        openIconPickerDialog({
+          itemName:
+            itemInput.value.trim() ||
+            existing?.item ||
+            "Unknown Item",
+    
+          selectedIconId,
+    
+          onSelect: (iconId) => {
+            selectedIconId = iconId;
+            void updateIconPreview();
+          },
+        });
+      },
+    );
+
+    itemInput.addEventListener(
+      "input",
+      () => {
+        renderSuggestions();
+    
+        if (selectedIconId === null) {
+          void updateIconPreview();
+        }
+      },
+    );
   
     setUniversalState();
+    void updateIconPreview();
   
     window.setTimeout(() => {
       itemInput.focus();

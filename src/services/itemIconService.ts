@@ -160,8 +160,19 @@ import type {
   
   export async function resolveItemIcon(
     itemName: string,
+    explicitIconId: string | null = null,
   ): Promise<ResolvedItemIcon | null> {
-    const normalizedItem = normalizeName(itemName);
+    if (explicitIconId) {
+      const explicitIcon =
+        await getIconById(explicitIconId);
+  
+      if (explicitIcon) {
+        return explicitIcon;
+      }
+    }
+  
+    const normalizedItem =
+      normalizeName(itemName);
   
     if (resolvedIconCache.has(normalizedItem)) {
       return (
@@ -171,13 +182,14 @@ import type {
   
     const customIcons = loadCustomIcons();
   
-    const customMatch = customIcons.find((icon) =>
-      matchesIcon(
-        itemName,
-        icon.name,
-        icon.aliases,
-      ),
-    );
+    const customMatch =
+      customIcons.find((icon) =>
+        matchesIcon(
+          itemName,
+          icon.name,
+          icon.aliases,
+        ),
+      );
   
     if (customMatch) {
       const result: ResolvedItemIcon = {
@@ -187,33 +199,46 @@ import type {
         custom: true,
       };
   
-      resolvedIconCache.set(normalizedItem, result);
+      resolvedIconCache.set(
+        normalizedItem,
+        result,
+      );
+  
       return result;
     }
   
     await loadBuiltInIconIndex();
   
-    const builtInMatch = builtInIcons.find((icon) =>
-      matchesIcon(
-        itemName,
-        icon.name,
-        icon.aliases,
-      ),
-    );
+    const builtInMatch =
+      builtInIcons.find((icon) =>
+        matchesIcon(
+          itemName,
+          icon.name,
+          icon.aliases,
+        ),
+      );
   
     if (!builtInMatch) {
-      resolvedIconCache.set(normalizedItem, null);
+      resolvedIconCache.set(
+        normalizedItem,
+        null,
+      );
+  
       return null;
     }
   
     const result: ResolvedItemIcon = {
       id: builtInMatch.id,
       name: builtInMatch.name,
-      url: `${ICON_BASE_PATH}/${builtInMatch.filename}`,
+      url:
+        `${ICON_BASE_PATH}/${builtInMatch.filename}`,
       custom: false,
     };
   
-    resolvedIconCache.set(normalizedItem, result);
+    resolvedIconCache.set(
+      normalizedItem,
+      result,
+    );
   
     return result;
   }
@@ -236,8 +261,14 @@ import type {
           return;
         }
   
+        const explicitIconId =
+          iconElement.dataset.iconId?.trim() || null;
+
         const resolved =
-          await resolveItemIcon(itemName);
+          await resolveItemIcon(
+            itemName,
+            explicitIconId,
+          );
   
         if (!resolved) {
           iconElement.replaceChildren("?");
@@ -374,7 +405,42 @@ import type {
       URL.revokeObjectURL(sourceUrl);
     }
   }
+
+  export async function getIconById(
+    iconId: string,
+  ): Promise<ResolvedItemIcon | null> {
+    const customIcon =
+      loadCustomIcons().find(
+        (icon) => icon.id === iconId,
+      );
   
+    if (customIcon) {
+      return {
+        id: customIcon.id,
+        name: customIcon.name,
+        url: customIcon.dataUrl,
+        custom: true,
+      };
+    }
+  
+    await loadBuiltInIconIndex();
+  
+    const builtInIcon =
+      builtInIcons.find(
+        (icon) => icon.id === iconId,
+      );
+  
+    if (!builtInIcon) {
+      return null;
+    }
+  
+    return {
+      id: builtInIcon.id,
+      name: builtInIcon.name,
+      url: `${ICON_BASE_PATH}/${builtInIcon.filename}`,
+      custom: false,
+    };
+  }
   
   function loadImage(
     source: string,

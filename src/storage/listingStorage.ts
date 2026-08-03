@@ -22,6 +22,7 @@ import type {
     notes?: unknown;
     createdAt?: unknown;
     updatedAt?: unknown;
+    iconId?: unknown;
   }
   
   function numberOrNull(value: unknown): number | null {
@@ -72,6 +73,11 @@ import type {
   
       type: normalizeType(raw.type),
       item,
+
+      iconId:
+        typeof raw.iconId === "string" && raw.iconId.trim()
+          ? raw.iconId
+          : null,
   
       quantity,
       grassPrice,
