@@ -25,6 +25,10 @@ import {
   renderStoragePage,
 } from "./ui/storagePage.ts";
 
+import {
+  renderCraftingPage,
+} from "./ui/craftingPage.ts";
+
 type PageName =
   | "buying"
   | "selling"
@@ -56,7 +60,7 @@ const pageDefinitions: Record<PageName, PageDefinition> = {
   },
   crafting: {
     label: "Crafting",
-    icon: "◆",
+    icon: "🛠",
   },
   quantity: {
     label: "Quantity Calculator",
@@ -68,7 +72,7 @@ const pageDefinitions: Record<PageName, PageDefinition> = {
   },
   storage: {
     label: "Storage",
-    icon: "□",
+    icon: "⌂",
   },
   history: {
     label: "History",
@@ -521,6 +525,7 @@ function openPage(
       },
     );
   } else if (page === "storage") {
+    
     cleanupCurrentPage =
       renderStoragePage(
         pageContent,
@@ -529,7 +534,15 @@ function openPage(
           setStatus,
         },
       );
-
+  } else if (page === "crafting") {
+    cleanupCurrentPage =
+      renderCraftingPage(
+        pageContent,
+        {
+          catalog,
+          setStatus,
+        },
+      );
   } else if (page === "preferences") {
     cleanupCurrentPage = renderPreferencesPage(
       pageContent,

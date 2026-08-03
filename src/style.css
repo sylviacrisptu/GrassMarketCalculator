@@ -2104,3 +2104,223 @@ textarea {
   font-size: 14px;
   font-weight: 700;
 }
+
+.crafting-calculator-card {
+  display: grid;
+  width: min(720px, 100%);
+  gap: 16px;
+}
+
+.crafting-input-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(180px, 0.4fr);
+}
+
+.crafting-results-card {
+  width: min(760px, 100%);
+  margin-top: 18px;
+}
+
+.crafting-results-header {
+  margin-bottom: 14px;
+}
+
+.crafting-results-header h3 {
+  margin: 4px 0 0;
+}
+
+.crafting-requirements {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
+
+.crafting-requirement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.crafting-requirement-row:last-child {
+  border-bottom: 0;
+}
+
+.crafting-requirement-row:nth-child(odd) {
+  background: var(--surface-soft);
+}
+
+.crafting-requirement-row > div {
+  display: grid;
+  gap: 4px;
+}
+
+.crafting-requirement-row span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.crafting-requirement-values {
+  text-align: right;
+}
+
+.crafting-requirement-values .missing {
+  color: var(--danger);
+}
+
+.crafting-requirement-values .complete {
+  color: var(--buying-text);
+}
+
+.recipe-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.recipe-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.recipe-card > div:first-child {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.recipe-card span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recipe-card-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.recipe-editor-dialog {
+  width: min(720px, 100%);
+}
+
+.recipe-output-grid {
+  display: grid;
+  gap: 13px;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(140px, 0.35fr);
+}
+
+.recipe-editor-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.recipe-editor-heading > div {
+  display: grid;
+  gap: 3px;
+}
+
+.recipe-editor-heading span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.recipe-ingredient-list {
+  display: grid;
+  gap: 9px;
+}
+
+.recipe-ingredient-row {
+  display: grid;
+  align-items: center;
+  gap: 9px;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(110px, 0.3fr)
+    auto;
+}
+
+@media (max-width: 620px) {
+  .crafting-input-grid,
+  .recipe-output-grid,
+  .recipe-ingredient-row {
+    grid-template-columns: 1fr;
+  }
+
+  .crafting-requirement-row,
+  .recipe-card,
+  .recipe-editor-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .crafting-requirement-values {
+    text-align: left;
+  }
+
+  .recipe-card-actions {
+    justify-content: flex-end;
+  }
+}
+
+.crafting-tree-placeholder {
+  display: grid;
+  width: 100%;
+  height: 460px;
+  margin-top: 16px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background-color: #343936;
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    );
+  background-size: 28px 28px;
+}
+
+.crafting-tree-placeholder-message {
+  display: grid;
+  gap: 5px;
+  text-align: center;
+}
+
+.crafting-tree-placeholder-message span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.crafting-summary-heading {
+  margin: 22px 0 12px;
+}
+
+.crafting-summary-heading h4 {
+  margin: 4px 0 0;
+}
