@@ -74,10 +74,6 @@ import {
     container.innerHTML = `
       <section class="page-header">
         <div>
-          <span class="page-eyebrow">
-            Application customization
-          </span>
-  
           <h2>Preferences</h2>
   
           <p>

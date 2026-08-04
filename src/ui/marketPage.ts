@@ -80,85 +80,50 @@ export function renderMarketPage(
   let listings: MarketListing[] = [];
 
   container.innerHTML = `
-    <section class="page-header">
+    <section class="page-header centered-page-header">
       <div>
-        <span class="page-eyebrow">
-          All saved offers
-        </span>
-
-        <h2>
-          Market Prices
-        </h2>
-
-        <p>
-          Compare buying and selling prices in one place.
+        <h2>Market Prices</h2>
+        <p class="page-description">
+          Combined buying and selling listings. Green tags are buying listings; red tags are selling listings.
         </p>
-      </div>
-
-      <div class="page-stat">
-        <strong id="market-count">0</strong>
-        <span>market listings</span>
       </div>
     </section>
 
-    <section class="results-card">
-      <div class="table-toolbar">
+    <section class="results-card listing-results-card">
+      <div class="table-toolbar unified-listing-toolbar market-toolbar">
+        <div class="toolbar-count">
+          <strong id="market-count">0</strong>
+          <span>saved listings</span>
+        </div>
+
         <input
           id="market-filter"
+          class="toolbar-search"
           type="search"
           placeholder="Search items, sellers, coordinates, restocks, or notes…"
           autocomplete="off"
         />
 
-        <select
-          id="market-type"
-          aria-label="Filter listing type"
-        >
-          <option value="all">
-            Buying and selling
-          </option>
-
-          <option value="buying">
-            Buying only
-          </option>
-
-          <option value="selling">
-            Selling only
-          </option>
-        </select>
-
-        <label class="checkbox-label">
-          <input
-            id="market-favorites"
-            type="checkbox"
-          />
-
+        <label class="checkbox-label favorites-filter">
+          <input id="market-favorites" type="checkbox" />
+          <span aria-hidden="true">★</span>
           Favorites only
         </label>
 
-        <select
-          id="market-sort"
-          aria-label="Sort market listings"
-        >
-          <option value="name">
-            Name A–Z
-          </option>
+        <span class="filter-by-label">Filter by:</span>
 
-          <option value="cheapest">
-            Cheapest price
-          </option>
+        <select id="market-type" aria-label="Filter listing type">
+          <option value="all">Buying and selling</option>
+          <option value="buying">Buying only</option>
+          <option value="selling">Selling only</option>
+        </select>
 
-          <option value="highest">
-            Highest price
-          </option>
-
-          <option value="recent">
-            Recently updated
-          </option>
-
-          <option value="favorites">
-            Favorites first
-          </option>
+        <select id="market-sort" aria-label="Sort market listings">
+          <option value="name">Name A–Z</option>
+          <option value="cheapest">Cheapest price</option>
+          <option value="highest">Highest price</option>
+          <option value="recent">Recently updated</option>
+          <option value="favorites">Favorites first</option>
         </select>
       </div>
 
@@ -178,16 +143,11 @@ export function renderMarketPage(
               <th class="actions-column"></th>
             </tr>
           </thead>
-
           <tbody id="market-table-body"></tbody>
         </table>
       </div>
 
-      <div
-        id="market-empty"
-        class="empty-state"
-        hidden
-      >
+      <div id="market-empty" class="empty-state" hidden>
         No market listings match these filters.
       </div>
     </section>

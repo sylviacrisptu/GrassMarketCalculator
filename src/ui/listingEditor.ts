@@ -108,11 +108,11 @@ import {
       <header class="dialog-header">
         <div>
           <span class="page-eyebrow">
-            ${existing ? "Modify market data" : "New market data"}
+            ${existing ? "Modify market listing" : "Market listing"}
           </span>
   
           <h2>
-            ${existing ? "Edit listing" : "Add listing"}
+            ${existing ? "Edit market listing" : "Create market listing"}
           </h2>
         </div>
   

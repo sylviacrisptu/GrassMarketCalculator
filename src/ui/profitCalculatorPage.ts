@@ -127,17 +127,11 @@ import {
     let latestPlainText = "";
   
     container.innerHTML = `
-      <section class="page-header">
+      <section class="page-header centered-page-header">
         <div>
-          <span class="page-eyebrow">
-            Market analysis
-          </span>
-  
           <h2>Profit Calculator</h2>
-  
-          <p>
-            Compare acquisition costs with selling revenue
-            using your current market listings.
+          <p class="page-description">
+            Compare acquisition costs with selling revenue using your current market listings.
           </p>
         </div>
       </section>

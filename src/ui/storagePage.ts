@@ -49,6 +49,7 @@ import {
   interface StoragePageOptions {
     catalog: ItemCatalog;
     setStatus: (message: string) => void;
+    initialQuery?: string;
   }
   
   type DisplayMode =
@@ -176,33 +177,20 @@ import {
     options: StoragePageOptions,
   ): () => void {
     let items: StorageItem[] = [];
+    const pressedKeys = new Set<string>();
   
     container.innerHTML = `
-      <section class="page-header">
+      <section class="page-header centered-page-header">
         <div>
-          <span class="page-eyebrow">
-            Owned inventory
-          </span>
-  
           <h2>Storage</h2>
-  
-          <p>
-            Track owned items and quantities using
-            stacks, chests, or math expressions.
+          <p class="page-description">
+            Track items you already own. Quantities accept math and units such as 8 stacks, 1sc, 0.5dc, or (4s + 12) * 2.
           </p>
-        </div>
-  
-        <div class="page-stat">
-          <strong id="storage-count">0</strong>
-          <span>stored item types</span>
         </div>
       </section>
   
       <section class="entry-card compact-entry-card">
         <div>
-          <span class="page-eyebrow">
-            Storage item
-          </span>
   
           <h3>Add an owned item</h3>
   
@@ -221,23 +209,31 @@ import {
         </button>
       </section>
   
-      <section class="results-card">
-        <div class="table-toolbar">
+      <section class="results-card listing-results-card">
+        <div class="table-toolbar unified-listing-toolbar storage-toolbar">
+          <div class="toolbar-count">
+            <strong id="storage-count">0</strong>
+            <span>stored item types</span>
+          </div>
+
           <input
             id="storage-search"
+            class="toolbar-search"
             type="search"
             autocomplete="off"
             placeholder="Search storage…"
           />
   
-          <label class="checkbox-label">
+          <label class="checkbox-label favorites-filter">
             <input
               id="storage-favorites-only"
               type="checkbox"
             />
-  
+            <span aria-hidden="true">★</span>
             Favorites only
           </label>
+
+          <span class="filter-by-label">Filter by:</span>
   
           <select
             id="storage-display-mode"
@@ -316,11 +312,11 @@ import {
           No storage items match these filters.
         </div>
   
-        <p class="storage-help">
-          Tip: click a quantity to edit it.<br>
-          Hold &ensp;<b>Shift</b>&ensp; while using + or − to change by one stack.<br>
-          Hold &ensp;<b>Ctrl</b>&ensp; while using + or - to change by 10 items.<br>
-          Hold &ensp;<b>Ctrl + Shift</b>&ensp; while using + or - to change by 10 stacks.
+        <p class="calculator-tip storage-tip">
+          <strong>Tip:</strong> &ensp;<b>Right click&ensp;</b> a listing to edit it.<br>
+          Hold &ensp;<b>Ctrl&ensp;</b> while using + or − to change by 10 items<br>
+          Hold &ensp;<b>Shift&ensp;</b> while using + or − to change by one stack.<br>
+          Hold &ensp;<b>Ctrl + Shift&ensp;</b> while using + or - to change by 10 stacks.
         </p>
       </section>
     `;
@@ -334,6 +330,9 @@ import {
       container.querySelector<HTMLInputElement>(
         "#storage-search",
       )!;
+
+      searchInput.value =
+        options.initialQuery ?? "";
   
     const favoritesOnly =
       container.querySelector<HTMLInputElement>(
@@ -383,6 +382,41 @@ import {
         },
       });
     }
+
+    function updateAdjustButtonLabels(): void {
+        const ctrl = pressedKeys.has("Control");
+        const shift = pressedKeys.has("Shift");
+      
+        let increase = "+1";
+        let decrease = "−1";
+      
+        if (ctrl && shift) {
+          increase = "+640";
+          decrease = "−640";
+        } else if (shift) {
+          increase = "+64";
+          decrease = "−64";
+        } else if (ctrl) {
+          increase = "+10";
+          decrease = "−10";
+        }
+      
+        tableBody
+          .querySelectorAll<HTMLButtonElement>(
+            '[data-action="increase"]',
+          )
+          .forEach((button) => {
+            button.textContent = increase;
+          });
+      
+        tableBody
+          .querySelectorAll<HTMLButtonElement>(
+            '[data-action="decrease"]',
+          )
+          .forEach((button) => {
+            button.textContent = decrease;
+          });
+      }
   
     function openActions(
       item: StorageItem,
@@ -503,24 +537,6 @@ import {
       ]);
     }
   
-    function getModifierAmount(
-        event: MouseEvent | PointerEvent,
-      ): number {
-        if (event.ctrlKey && event.shiftKey) {
-          return 640;
-        }
-      
-        if (event.shiftKey) {
-          return 64;
-        }
-      
-        if (event.ctrlKey) {
-          return 10;
-        }
-      
-        return 1;
-      }
-
     function render(): void {
       const query =
         searchInput.value
@@ -672,17 +688,17 @@ import {
                   <button
                     type="button"
                     data-action="decrease"
-                    title="Decrease quantity. Ctrl: 10, Shift: 64, Ctrl+Shift: 640."
+                    title="Decrease by 1. Hold Shift for one stack."
                   >
-                    −1
+                    −
                   </button>
   
                   <button
                     type="button"
                     data-action="increase"
-                    title="Increase quantity. Ctrl: 10, Shift: 64, Ctrl+Shift: 640."
+                    title="Increase by 1. Hold Shift for one stack."
                   >
-                    +1
+                    +
                   </button>
                 </div>
               </td>
@@ -860,50 +876,6 @@ import {
           "button[data-action]",
         )
         .forEach((button) => {
-          const buttonAction =
-            button.dataset.action;
-          
-          if (
-            buttonAction === "increase" ||
-            buttonAction === "decrease"
-          ) {
-            const updateLabel = (
-              event: MouseEvent | PointerEvent,
-            ): void => {
-              const amount =
-                getModifierAmount(event);
-          
-              button.textContent =
-                buttonAction === "increase"
-                  ? `+${amount}`
-                  : `−${amount}`;
-            };
-          
-            button.addEventListener(
-              "pointerenter",
-              updateLabel,
-            );
-          
-            button.addEventListener(
-              "pointermove",
-              updateLabel,
-            );
-          
-            button.addEventListener(
-              "pointerdown",
-              updateLabel,
-            );
-          
-            button.addEventListener(
-              "pointerleave",
-              () => {
-                button.textContent =
-                  buttonAction === "increase"
-                    ? "+1"
-                    : "−1";
-              },
-            );
-          }
           button.addEventListener(
             "click",
             (event) => {
@@ -937,8 +909,15 @@ import {
                 action === "increase" ||
                 action === "decrease"
               ) {
-                const amount =
-                    getModifierAmount(event);
+                let amount = 1;
+
+                if (event.ctrlKey && event.shiftKey) {
+                amount = 640;
+                } else if (event.shiftKey) {
+                amount = 64;
+                } else if (event.ctrlKey) {
+                amount = 10;
+                }
                 
                 adjustStorageQuantity(
                   id,
@@ -960,6 +939,8 @@ import {
             },
           );
         });
+
+        updateAdjustButtonLabels();
     }
   
     addButton.addEventListener(
@@ -999,15 +980,39 @@ import {
       render,
     );
 
-    const unsubscribe =
-        subscribeToStorage(
-            (nextItems) => {
-                items = nextItems;
-                render();
-            },
-        );
-    
-    return () => {
-        unsubscribe();
-      };
+    document.addEventListener("keydown", (event) => {
+        if (
+          event.key !== "Shift" &&
+          event.key !== "Control"
+        ) {
+          return;
+        }
+      
+        pressedKeys.add(event.key);
+        updateAdjustButtonLabels();
+      });
+      
+      document.addEventListener("keyup", (event) => {
+        if (
+          event.key !== "Shift" &&
+          event.key !== "Control"
+        ) {
+          return;
+        }
+      
+        pressedKeys.delete(event.key);
+        updateAdjustButtonLabels();
+      });
+      
+      window.addEventListener("blur", () => {
+        pressedKeys.clear();
+        updateAdjustButtonLabels();
+      });
+  
+    return subscribeToStorage(
+      (nextItems) => {
+        items = nextItems;
+        render();
+      },
+    );
   }

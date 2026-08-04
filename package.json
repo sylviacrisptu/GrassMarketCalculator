@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "build-recipes": "node scripts/buildRecipeCatalog.cjs"
+    "build-recipes": "node scripts/buildRecipeCatalog.cjs",
+    "update-icons": "node scripts/update-icons.mjs"
   },
   "devDependencies": {
     "minecraft-data": "^3.112.0",

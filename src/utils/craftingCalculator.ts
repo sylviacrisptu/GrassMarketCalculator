@@ -117,9 +117,17 @@ import type {
       }
   
       if (recipePath.has(key)) {
-        throw new Error(
-          `Circular recipe detected at ${item}.`,
+        /*
+         * Stop recursion at the repeated item. Treat it
+         * as a terminal requirement so circular storage
+         * conversions do not crash the calculator.
+         */
+        addRawIngredient(
+          item,
+          quantityNeeded,
         );
+      
+        return;
       }
   
       const craftsNeeded =

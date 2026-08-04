@@ -23,11 +23,12 @@ import {
   } from "../services/itemIconService.ts";
 
 
-interface ListingPageOptions {
-  type: ListingType;
-  catalog: ItemCatalog;
-  setStatus: (message: string) => void;
-}
+  interface ListingPageOptions {
+    type: ListingType;
+    catalog: ItemCatalog;
+    setStatus: (message: string) => void;
+    initialQuery?: string;
+  }
 
 
 function escapeHtml(value: string): string {
@@ -92,6 +93,7 @@ export function renderListingPage(
     type,
     catalog,
     setStatus,
+    initialQuery = "",
   } = options;
 
   const isBuying = type === "buying";
@@ -99,41 +101,22 @@ export function renderListingPage(
   let currentListings: MarketListing[] = [];
 
   container.innerHTML = `
-    <section class="page-header">
+    <section class="page-header centered-page-header">
       <div>
-        <span class="page-eyebrow">
-          ${isBuying ? "Spend grass blocks" : "Receive grass blocks"}
-        </span>
-
-        <h2>
-          ${isBuying ? "Buying Items" : "Selling Items"}
-        </h2>
-
-        <p>
+        <h2>${isBuying ? "Buying Items" : "Selling Items"}</h2>
+        <p class="page-description">
           ${
             isBuying
-              ? "Compare prices and find the cheapest way to obtain an item."
-              : "Track offers and compare the best return for items you sell."
+              ? "You spend grass blocks and receive items. Add several listings to find the most cost-effective purchase."
+              : "You give items and receive grass blocks. Add selling listings and compare market rates."
           }
         </p>
       </div>
-
-      <div class="page-stat">
-        <strong id="listing-count">0</strong>
-        <span>saved listings</span>
-      </div>
     </section>
 
-    <section class="entry-card compact-entry-card">
+    <section class="entry-card compact-entry-card create-listing-card">
       <div>
-        <span class="page-eyebrow">
-          Market listing
-        </span>
-
-        <h3>
-          Add another ${isBuying ? "buying" : "selling"} offer
-        </h3>
-
+        <h3>Create market listing</h3>
         <p>
           Include stock limits, seller information, shop coordinates,
           restock details, and notes.
@@ -149,23 +132,31 @@ export function renderListingPage(
       </button>
     </section>
 
-    <section class="results-card">
-      <div class="table-toolbar">
+    <section class="results-card listing-results-card">
+      <div class="table-toolbar unified-listing-toolbar">
+        <div class="toolbar-count">
+          <strong id="listing-count">0</strong>
+          <span>saved listings</span>
+        </div>
+
         <input
           id="listing-filter"
+          class="toolbar-search"
           type="search"
-          placeholder="Filter ${type} listings…"
+          placeholder="Search ${type} listings…"
           autocomplete="off"
         />
 
-        <label class="checkbox-label">
+        <label class="checkbox-label favorites-filter">
           <input
             id="favorites-only"
             type="checkbox"
           />
-
+          <span aria-hidden="true">★</span>
           Favorites only
         </label>
+
+        <span class="filter-by-label">Filter by:</span>
 
         <select
           id="listing-sort"
@@ -174,22 +165,12 @@ export function renderListingPage(
           <option value="best">
             ${isBuying ? "Cheapest first" : "Highest return first"}
           </option>
-
           <option value="worst">
             ${isBuying ? "Most expensive first" : "Lowest return first"}
           </option>
-
-          <option value="name">
-            Name A–Z
-          </option>
-
-          <option value="recent">
-            Recently updated
-          </option>
-
-          <option value="favorites">
-            Favorites first
-          </option>
+          <option value="name">Name A–Z</option>
+          <option value="recent">Recently updated</option>
+          <option value="favorites">Favorites first</option>
         </select>
       </div>
 
@@ -208,7 +189,6 @@ export function renderListingPage(
               <th class="actions-column"></th>
             </tr>
           </thead>
-
           <tbody id="listing-table-body"></tbody>
         </table>
       </div>
@@ -218,7 +198,7 @@ export function renderListingPage(
         class="empty-state"
         hidden
       >
-        No matching ${type} listings.
+        No ${type} listings match these filters.
       </div>
     </section>
   `;
@@ -232,6 +212,9 @@ export function renderListingPage(
     container.querySelector<HTMLInputElement>(
       "#listing-filter",
     )!;
+
+    filterInput.value =
+      initialQuery;
 
   const favoritesOnly =
     container.querySelector<HTMLInputElement>(

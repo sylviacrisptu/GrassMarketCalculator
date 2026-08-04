@@ -62,24 +62,22 @@ import {
     options: QuantityCalculatorPageOptions,
   ): void {
     container.innerHTML = `
-      <section class="page-header">
+      <section class="page-header centered-page-header">
         <div>
-          <span class="page-eyebrow">
-            Quantity tools
-          </span>
-  
-          <h2>Quantity Calculator</h2>
-  
-          <p>
-            Evaluate item amounts using math, stacks,
-            single chests, and double chests.
+          <h2>Stack Calculator</h2>
+          <p class="page-description">
+            Convert item amounts between individual items, stacks, single chests, and double chests.
           </p>
         </div>
       </section>
   
       <section class="content-card quantity-calculator-card">
+        <p class="calculator-tip">
+          <strong>Tip:</strong> You can use math notation in this calculator.
+        </p>
+
         <label>
-          Quantity expression
+          Stack or quantity expression
   
           <input
             id="quantity-expression"
@@ -111,7 +109,7 @@ import {
             class="primary-button"
             type="button"
           >
-            Calculate quantity
+            Calculate stacks
           </button>
   
           <button

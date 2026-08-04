@@ -1,0 +1,58 @@
+{
+  "failed": [
+    {
+      "id": "creeper_banner_pattern",
+      "name": "Banner Pattern (Creeper Charge)",
+      "attemptedUrls": [
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/items/creeper_banner_pattern.png",
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/blocks/creeper_banner_pattern.png"
+      ],
+      "error": "404 Not Found"
+    },
+    {
+      "id": "flower_banner_pattern",
+      "name": "Banner Pattern (Flower Charge)",
+      "attemptedUrls": [
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/items/flower_banner_pattern.png",
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/blocks/flower_banner_pattern.png"
+      ],
+      "error": "404 Not Found"
+    },
+    {
+      "id": "skull_banner_pattern",
+      "name": "Banner Pattern (Skull Charge)",
+      "attemptedUrls": [
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/items/skull_banner_pattern.png",
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/blocks/skull_banner_pattern.png"
+      ],
+      "error": "404 Not Found"
+    },
+    {
+      "id": "piglin_banner_pattern",
+      "name": "Banner Pattern (Snout)",
+      "attemptedUrls": [
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/items/piglin_banner_pattern.png",
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/blocks/piglin_banner_pattern.png"
+      ],
+      "error": "404 Not Found"
+    },
+    {
+      "id": "mojang_banner_pattern",
+      "name": "Banner Pattern (Thing)",
+      "attemptedUrls": [
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/items/mojang_banner_pattern.png",
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/blocks/mojang_banner_pattern.png"
+      ],
+      "error": "404 Not Found"
+    },
+    {
+      "id": "experience_bottle",
+      "name": "Bottle o' Enchanting",
+      "attemptedUrls": [
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/items/experience_bottle.png",
+        "https://raw.githubusercontent.com/anish-shanbhag/minecraft-api/master/public/images/blocks/experience_bottle.png"
+      ],
+      "error": "404 Not Found"
+    }
+  ]
+}
